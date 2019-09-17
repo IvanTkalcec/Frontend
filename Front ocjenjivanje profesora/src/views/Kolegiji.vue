@@ -42,7 +42,7 @@
                 kolegijiSelect: [],
                 odabraniKolegij: '',
 
-                lozinkaKolegija: '',
+                lozinkaKolegija: '123',
                 upisanaLozinka: '',
                 odabrani: false,
                 lozinka: false,
@@ -85,18 +85,24 @@
                     })
             },
             sortirajProf(){
-                this.kolegiji.forEach(function(value){          // Vrtimo kolegije kroz petlju
-                    if(value.id === this.odabraniKolegij){      // Usporeduje id kolegija (value.id) s id-jem odabranog kolegija (odabraniKolegij). Ako je isti ulazi u blok
-                        this.predmetniProf = value.profesori;   // U varijablu, odnosno listu predmetniProf sprema profesore koji predaju taj kolegij
-                        this.lozinkaKolegija = value.lozinka;   // U varijablu lozinkaKolegija sprema lozinku kolegija
+                var pom = [];
+                this.kolegiji.forEach(function(value){
+                    if(value.id === this.odabraniKolegij){
+                        pom = value.profesori;
                     }
                 }, this);
-                // IZBACIO SAM ONU DRUGU forEach PETLJU JER JE BILA VISAK. NASAO SAM JEDNOSTAVNIJI NACIN KAD JE TUNTI SREDIO BAZU
+                this.profesori.forEach(function(value){
+                    pom.forEach(function(id){
+                        if(value.id === id){
+                            this.predmetniProf.push(value);
+                        }
+                    }, this);
+                }, this);
             },
             potvrdaLozinke(){
-                if(this.upisanaLozinka === this.lozinkaKolegija){   // Prije je "lozinkaKolegija" bila namjestena da je za svaki kolegij '123' lozinka, a sada uzima lozinku od svakog kolegija posebno. Linija 91
-                    this.odabrani = false;                          // Skriva upis lozinke
-                    this.lozinka = true;                            // Pokazuje profesore koji predaju odabrani kolegij
+                if(this.upisanaLozinka === this.lozinkaKolegija){
+                    this.odabrani = false;
+                    this.lozinka = true;
                 } else {
                     alert("Kriva lozinka. Pokusajte ponovno!");
                 }

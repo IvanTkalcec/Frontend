@@ -84,11 +84,9 @@
                   pom = Number(pom) + Number(value.ocjena);
               });
               pom = Number(pom) / 10;
-              if (this.prof.prosjecnaocjena !== 0) {                        // Provjerava jel profesor vec bio ocjenjivan prije. Ako je zbraja prijasnju ocjenu s novom i djeli to s 2
-                  pom = Number(this.prof.prosjecnaocjena) + Number(pom);
-                  pom = Number(pom) / 2;
-              }
-              this.zavrsnaOcjena = pom;                                     // Ako nije onda sam sprema novu ocjenu u "zavrsnaOcjena"
+              pom = Number(this.prof.prosjecnaocjena) + Number(pom);
+              pom = Number(pom) / 2;
+              this.zavrsnaOcjena = pom;
               this.spremiAnketu();
           },
             spremiAnketu(){
@@ -100,6 +98,7 @@
                   id: this.prof.id,
                   prosjecnaocjena: this.zavrsnaOcjena
               };
+              console.log('anketa: ', anketa);
               axios.post("http://127.0.0.1:5000/ankete", anketa)
                   .then(() => {
                       this.$router.replace({name: 'zahvala'});
@@ -107,6 +106,7 @@
                   .catch((error) => {
                       console.log("Greska, nije moguce zavrsiti anketu. Error: ", error);
                   });
+              console.log(profesor);
               axios.put("http://127.0.0.1:5000/profesori", profesor)
                   .then(() => {
                       console.log("Zavrsna ocjena profesora je uspjesno spremljena");
